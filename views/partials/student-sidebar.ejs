@@ -1,0 +1,59 @@
+<!-- <div class="col-md-3">
+    <div class="list-group">
+        <a href="/student/dashboard" class="list-group-item">Dashboard</a>
+        <a href="/student/search-teacher" class="list-group-item">Find Teacher</a>
+        <a href="/student/doubts" class="list-group-item">Ask Doubt</a>
+        <a href="/student/notes" class="list-group-item">Notes</a>
+        <a href="/student/attendance" class="list-group-item">Attendance</a>
+        <a href="/student/fees" class="list-group-item">Fees</a>
+        <a href="/student/profile" class="list-group-item">Profile</a>
+    </div>
+</div> -->
+
+<div class="sidebar bg-white border-end shadow-sm" id="sidebar"
+    style="min-height: calc(100vh - 60px); width: 250px; transition: all 0.3s;">
+    <div class="p-3">
+        <nav class="nav flex-column gap-2">
+            <a href="/teacher/dashboard"
+                class="nav-link rounded-3 p-3 <%= title === 'Dashboard' ? 'active shadow-sm bg-primary text-white' : 'text-muted' %>">
+                <i class="fa-solid fa-house me-2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/teacher/doubts"
+                class="nav-link rounded-3 p-3 <%= title === 'Doubts' ? 'active shadow-sm bg-primary text-white' : 'text-muted' %>">
+                <i class="fa-solid fa-circle-question me-2"></i>
+                <span>Solve Doubts</span>
+            </a>
+            <a href="/teacher/students" class="nav-link rounded-3 p-3 text-muted">
+                <i class="fa-solid fa-user-group me-2"></i>
+                <span>Students</span>
+            </a>
+            <a href="/teacher/tasks" class="nav-link rounded-3 p-3 text-muted">
+                <i class="fa-solid fa-list-check me-2"></i>
+                <span>Assign Tasks</span>
+            </a>
+            <a href="/teacher/fees" class="nav-link rounded-3 p-3 text-muted">
+                <i class="fa-solid fa-indian-rupee-sign me-2"></i>
+                <span>Due Fees</span>
+            </a>
+        </nav>
+
+        <hr class="my-4">
+
+        <a href="/logout" class="nav-link text-danger fw-bold p-3">
+            <i class="fa-solid fa-power-off me-2"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    #sidebar.collapsed {
+        margin-left: -250px;
+    }
+
+    .nav-link:hover:not(.active) {
+        background-color: #f8f9fa;
+        color: #4361ee !important;
+    }
+</style>

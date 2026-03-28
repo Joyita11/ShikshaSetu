@@ -1,0 +1,236 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/teachers/doubts.css">
+</head>
+
+<header class="dashboard-header">
+    <button id="sidebarToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+
+    <h4 class="fw-bold text-primary mb-0">
+        <i class="fa-solid fa-graduation-cap me-2"></i>ShikshaSetu
+    </h4>
+
+
+</header>
+
+
+<div class="sidebar" id="sidebar">
+    <nav class="nav flex-column gap-2">
+        <a href="/teacher/dashboard" class="nav-link">
+            <i class="fa-solid fa-house"></i><span>Dashboard</span>
+        </a>
+        <a href="/teacher/doubts" class="nav-link active">
+            <i class="fa-solid fa-circle-question"></i><span>Solve Doubts</span>
+        </a>
+        <a href="/teacher/students" class="nav-link">
+            <i class="fa-solid fa-user-graduate"></i><span>Students</span>
+        </a>
+        <a href="/teacher/tasks" class="nav-link">
+            <i class="fa-solid fa-list-check"></i><span>Assign Tasks</span>
+        </a>
+        <a href="/teacher/fees" class="nav-link">
+            <i class="fa-solid fa-credit-card"></i><span>Due Fees</span>
+        </a>
+    </nav>
+
+    <a href="/logout" class="nav-link text-danger fw-bold mt-auto">
+        <i class="fa-solid fa-power-off"></i><span>Logout</span>
+    </a>
+</div>
+
+
+<main class="main-content pt-6">
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">Student Doubts</h2>
+
+            <p class="text-muted mb-0">
+                You have
+                <span class="text-primary fw-bold">
+                    <%= doubts.filter(d=> d.status !== "Solved").length %>
+                </span>
+                unresolved student queries.
+            </p>
+
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="action-btn text-muted">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>
+                History
+            </button>
+        </div>
+
+    </div>
+
+
+    <% if(doubts.length===0){ %>
+
+        <div class="alert alert-info">
+            No doubts from students yet.
+        </div>
+
+        <% } %>
+
+
+            <% doubts.forEach(d=> { %>
+
+                <div class="task-card">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="d-flex align-items-center">
+
+                            <img src="https://ui-avatars.com/api/?name=<%= d.student_name %>&background=4361ee&color=fff"
+                                class="student-avatar me-3">
+
+                            <div>
+
+                                <h6 class="fw-bold mb-0">
+                                    <%= d.student_name %>
+                                </h6>
+
+                                <small class="text-muted">
+                                    <%= d.subject %> •
+                                        <%= new Date(d.created_at).toLocaleString() %>
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <% if(d.status==="Solved" ){ %>
+
+                            <span class="badge bg-success">
+                                Solved
+                            </span>
+
+                            <% } else { %>
+
+                                <span class="badge bg-danger">
+                                    Pending
+                                </span>
+
+                                <% } %>
+
+                    </div>
+
+
+                    <div class="doubt-bubble">
+
+                        <p class="mb-0 fw-semibold text-dark">
+
+                            "<%= d.question %>"
+
+                        </p>
+
+                    </div>
+
+
+                    <% if(d.answer){ %>
+
+                        <div class="alert alert-success mt-3">
+
+                            <strong>Your Answer:</strong>
+
+                            <%= d.answer %>
+
+                        </div>
+
+                        <% } else { %>
+
+
+                            <form action="/teacher/doubts/reply/<%= d.id %>" method="POST">
+
+                                <div class="textarea-wrapper">
+
+                                    <textarea name="answer" class="form-control reply-input" rows="3"
+                                        placeholder="Explain the solution here..." required></textarea>
+
+                                    <!-- Floating Icons -->
+                                    <div class="search-icons">
+
+                                        <!-- Google -->
+                                        <a href="#" class="google-btn" data-question="<%= d.question %>">
+                                            <img src="/images/google.png" alt="Google">
+                                        </a>
+
+                                        <!-- ChatGPT -->
+                                        <a href="#" class="chatgpt-btn" data-question="<%= d.question %>">
+                                            <img src="/images/chatgpt.png" alt="ChatGPT">
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+
+                                    <button type="submit" class="btn-resolve">
+
+                                        Send Solution
+
+                                        <i class="fa-solid fa-paper-plane ms-2"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <% } %>
+
+                </div>
+
+                <% }) %>
+
+</main>
+
+
+<script>
+
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // Google search
+        document.querySelectorAll(".google-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const question = btn.getAttribute("data-question");
+                const url = "https://www.google.com/search?q=" + encodeURIComponent(question);
+                window.open(url, "_blank");
+            });
+        });
+
+        // ChatGPT search
+        document.querySelectorAll(".chatgpt-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const question = btn.getAttribute("data-question");
+                const url = "https://chat.openai.com/?q=" + encodeURIComponent(question);
+                window.open(url, "_blank");
+            });
+        });
+
+    });
+
+
+</script>
+
+
+<%- include('../partials/footer') %>
+    ```

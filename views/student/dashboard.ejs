@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | ShikshaSetu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #060e34;
+            --sidebar-bg: #2d296525;
+            --main-bg: #c5afee26;
+            --text-dark: #2b3674;
+            --card-shadow: 0 10px 30px rgba(163, 174, 208, 0.1);
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--main-bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            margin: 0;
+            display: flex;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
+            z-index: 100;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #4d5c88;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #c5afee5b;
+            color: var(--primary);
+        }
+
+        .nav-link.active i {
+            color: var(--primary);
+        }
+
+        .logout-link {
+            margin-top: auto;
+            color: #ee5d50 !important;
+        }
+
+        /* --- MAIN CONTENT LAYOUT --- */
+        .main-content {
+            margin-left: 260px;
+            /* Same as sidebar width */
+            width: calc(100% - 260px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- FULL WIDTH TOP NAV --- */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background: #ffffff;
+            padding: 15px 30px;
+            width: 100%;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .profile-pill {
+            background: #f4f7fe;
+            padding: 6px 18px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* --- DASHBOARD BODY --- */
+        .dashboard-body {
+            padding: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        /* --- QUOTE CARD --- */
+        .quote-card {
+            background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illustration-img {
+            height: 160px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .brand span,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+        }
+
+        .btn-primary {
+            background-color: #2b3674;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <a href="#" class="brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>ShikshaSetu</span>
+        </a>
+
+        <nav>
+            <a href="/student/dashboard" class="nav-link active">
+                <i class="fa-solid fa-house"></i> <span>Dashboard</span>
+            </a>
+            <a href="/student/doubts" class="nav-link">
+                <i class="fa-solid fa-comment-dots"></i> <span>Post Doubts</span>
+            </a>
+            <a href="/student/tasks" class="nav-link">
+                <i class="fa-solid fa-file-pen"></i> <span>Assignments</span>
+            </a>
+            <a href="/student/fees" class="nav-link">
+                <i class="fa-solid fa-wallet"></i> <span>Due Fees</span>
+            </a>
+        </nav>
+
+        <a href="/logout" class="nav-link logout-link">
+            <i class="fa-solid fa-power-off"></i> <span>Logout</span>
+        </a>
+    </div>
+
+    <div class="main-content">
+
+
+
+        <main class="dashboard-body">
+
+            <div class="mb-4">
+                <h2 class="fw-bold mb-1">Hello, Dreamer! 👋</h2>
+                <p class="text-muted">Stay focused and keep growing.</p>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <div class="icon-box" style="background: #fff9e6; color: #ffbb00;">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <p class="text-muted small fw-bold mb-1 text-uppercase">Pending Tasks</p>
+                                <h3 class="fw-bold mb-0">
+                                    <%= stats?.pending || 0 %> Items
+                                </h3>
+
+                                <span class="text-success"><i class="fa-solid fa-arrow-up"></i>
+                                    <%= stats?.completed || 0 %> Completed
+                                </span>
+
+
+
+                            </div>
+                            <a href="/student/tasks" class="btn btn-primary btn-sm rounded-pill px-4">View All</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <div class="icon-box" style="background: #e6f9f0; color: #00b894;">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <p class="text-muted small fw-bold mb-1 text-uppercase">Fees Status</p>
+                                <h3 class="fw-bold mb-0 
+                                    <%= feeStatus === 'Paid' ? 'text-success' : 
+                                        feeStatus === 'Partial' ? 'text-warning' : 
+                                        'text-danger' %>">
+
+                                    <%= feeStatus.toUpperCase() %>
+
+                                </h3>
+                                <p class="mb-0 small text-muted">
+                                    Due: ₹<%= totalDue %>
+                                </p>
+                            </div>
+                            <a href="/student/fees" class="btn btn-outline-success btn-sm rounded-pill px-4">History</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="quote-card">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <i class="fa-solid fa-quote-left fs-1 opacity-25 mb-3 d-block"></i>
+                                <h3 class="fw-bold mb-3 italic">"Your education is a dress rehearsal for a life that is
+                                    yours to lead."</h3>
+                                <p class="mb-0 opacity-75">— Theodore Roosevelt</p>
+                            </div>
+                            <div class="col-lg-4 text-center d-none d-lg-block">
+                                <img src="https://illustrations.popsy.co/blue/work-from-home.svg"
+                                    alt="Student Illustration"
+                                    style="width: 180px; position: absolute; right: 40px; bottom: 10px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+
+</html>
